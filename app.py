@@ -1,10 +1,11 @@
 from flask import Flask, request
+from flask_smorest import abort
 
 stores = [
     { 
      "name": "My First Store",
      "items": [
-         { "name": "Chair", "price": 15.99 }
+         { "name": "Chair", "price": 19.99 }
      ]
      },
 ]
