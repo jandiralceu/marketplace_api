@@ -10,6 +10,7 @@ blp = Blueprint("items", __name__, description="Operations on items")
 
 @blp.route("/items")
 class Store(MethodView):
+    @blp.response(200, ItemSchema(many=True))
     def get(self):
         try:
             pass
@@ -17,6 +18,7 @@ class Store(MethodView):
             pass
     
     @blp.arguments(ItemSchema)
+    @blp.response(201, ItemSchema)
     def post(self, body):
         try:
             pass
@@ -25,6 +27,7 @@ class Store(MethodView):
         
 @blp.route("/items/<string:id>")
 class StoreWithID(MethodView):
+    @blp.response(200, ItemSchema)
     def get(self, item_id: str):
         try:
             pass
