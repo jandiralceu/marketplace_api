@@ -5,11 +5,11 @@ from flask_smorest import Blueprint, abort
 
 from schema import PlainStoreSchema
 
-blp = Blueprint("stores", __name__, description="Operations on stores")
+blp = Blueprint("stores", __name__, description="Operations on Stores table in database")
 
 
 @blp.route("/stores")
-class StoreList(MethodView):
+class Store(MethodView):
     @blp.response(200, PlainStoreSchema(many=True))
     def get(self):
         try:
@@ -26,7 +26,7 @@ class StoreList(MethodView):
             pass
         
 @blp.route("/stores/<string:id>")
-class Store(MethodView):
+class StoreById(MethodView):
     @blp.response(200, PlainStoreSchema)
     def get(self, id: str):
         try:
@@ -34,6 +34,7 @@ class Store(MethodView):
         except KeyError:
             pass
     
+    @blp.response(204)
     def delete(self, id: str):
         try:
             pass
@@ -41,6 +42,7 @@ class Store(MethodView):
             pass
     
     @blp.arguments(PlainStoreSchema)
+    @blp.response(200)
     def put(self, bod, id: str):
         try:
             pass
