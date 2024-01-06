@@ -7,7 +7,7 @@ blp = Blueprint("stores", __name__, description="Operations on stores")
 
 
 @blp.route("/stores")
-class Store(MethodView):
+class StoreList(MethodView):
     def get(self):
         try:
             pass
@@ -21,7 +21,7 @@ class Store(MethodView):
             pass
         
 @blp.route("/stores/<string:store_id>")
-class StoreList(MethodView):
+class Store(MethodView):
     def get(self, store_id: str):
         try:
             pass
@@ -29,6 +29,12 @@ class StoreList(MethodView):
             pass
     
     def delete(self, store_id: str):
+        try:
+            pass
+        except KeyError:
+            pass
+        
+    def put(self):
         try:
             pass
         except KeyError:
