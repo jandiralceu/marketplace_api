@@ -3,6 +3,8 @@ from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 
+from schema import StoreSchema
+
 blp = Blueprint("stores", __name__, description="Operations on stores")
 
 
@@ -14,27 +16,29 @@ class StoreList(MethodView):
         except KeyError:
             pass
     
-    def post(self):
+    @blp.arguments(StoreSchema)
+    def post(self, body):
         try:
             pass
         except KeyError:
             pass
         
-@blp.route("/stores/<string:store_id>")
+@blp.route("/stores/<string:id>")
 class Store(MethodView):
-    def get(self, store_id: str):
+    def get(self, id: str):
         try:
             pass
         except KeyError:
             pass
     
-    def delete(self, store_id: str):
+    def delete(self, id: str):
         try:
             pass
         except KeyError:
             pass
-        
-    def put(self):
+    
+    @blp.arguments(StoreSchema)
+    def put(self, bod, id: str):
         try:
             pass
         except KeyError:

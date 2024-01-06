@@ -3,6 +3,8 @@ from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 
+from schema import ItemSchema, ItemUpdateSchema
+
 blp = Blueprint("items", __name__, description="Operations on items")
 
 
@@ -14,13 +16,14 @@ class Store(MethodView):
         except KeyError:
             pass
     
-    def post(self):
+    @blp.arguments(ItemSchema)
+    def post(self, body):
         try:
             pass
         except KeyError:
             pass
         
-@blp.route("/items/<string:item_id>")
+@blp.route("/items/<string:id>")
 class StoreWithID(MethodView):
     def get(self, item_id: str):
         try:
@@ -33,8 +36,9 @@ class StoreWithID(MethodView):
             pass
         except KeyError:
             pass
-        
-    def put(self, item_id: str):
+    
+    @blp.arguments(ItemUpdateSchema)
+    def put(self, body, id: str):
         try:
             pass
         except KeyError:
