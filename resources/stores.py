@@ -16,7 +16,7 @@ blp = Blueprint("stores", __name__, description="Operations on Stores table in d
 class Store(MethodView):
     @blp.response(200, PlainStoreSchema(many=True))
     def get(self):
-        raise NotImplementedError("Get all stores is not implemented yet")
+        return StoreModel.query.all()
     
     @blp.arguments(PlainStoreSchema)
     @blp.response(201, PlainStoreSchema)
@@ -44,11 +44,17 @@ class StoreById(MethodView):
     def get(self, id: str):
         return StoreModel.query.get_or_404(id)
     
-    @blp.response(204)
-    def delete(self, id: str):
-        raise NotImplementedError("Get all stores is not implemented yet")
     
     @blp.arguments(PlainStoreSchema)
     @blp.response(200)
     def put(self, bod, id: str):
-        raise NotImplementedError("Get all stores is not implemented yet")
+        store = StoreModel.query.get_or_404(id)
+        raise NotImplementedError("Delete store is not implemented yet")
+
+        
+        
+    @blp.response(204)
+    def delete(self, id: str):
+        store = StoreModel.query.get_or_404(id)
+        db.session.delete(store)
+        db.session.commit()

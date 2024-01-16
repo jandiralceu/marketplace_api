@@ -1,4 +1,3 @@
-import uuid
 from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
@@ -15,7 +14,7 @@ blp = Blueprint("items", __name__, description="Operations on Items table in dat
 class Item(MethodView):
     @blp.response(200, PlainItemSchema(many=True))
     def get(self):
-        raise NotImplementedError("Get all stores is not implemented yet")
+        return ItemModel.query.all()
     
     @blp.arguments(PlainItemSchema)
     @blp.response(201, PlainItemSchema)
@@ -37,12 +36,26 @@ class ItemById(MethodView):
     @blp.response(200, PlainItemSchema)
     def get(self, id: str):
         return ItemModel.query.get_or_404(id)
-    
-    @blp.response(204)
-    def delete(self, id: str):
-        raise NotImplementedError("Get all stores is not implemented yet")
-    
+
+
     @blp.arguments(ItemUpdateSchema)
     @blp.response(200)
     def put(self, body, id: str):
-        raise NotImplementedError("Get all stores is not implemented yet")
+        item: ItemModel | None = ItemModel.query.get(id)
+        if item:
+            item.name = body["name"]
+            item.price = body["price"]
+        else:
+            item = ItemModel(id=id, **body)
+        
+        db.session.add(item)
+        db.session.commit()
+        
+        return item
+    
+    
+    @blp.response(204)
+    def delete(self, id: str):
+        item = ItemModel.query.get_or_404(id)
+        db.session.delete(item)
+        db.session.commit()
