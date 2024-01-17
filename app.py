@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, request
+from flask import Flask
 from flask_smorest import Api
 
 
