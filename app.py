@@ -7,6 +7,7 @@ from flask_smorest import Api
 from db import db
 from resources.items import blp as ItemBlueprint
 from resources.stores import blp as StoreBlueprint
+from resources.tags import blp as TagBlueprint
 
 base_dir = os.path.abspath(os.path.dirname(__file__))
 
@@ -32,5 +33,6 @@ def create_app(db_url: str = None):
 
     api.register_blueprint(ItemBlueprint)
     api.register_blueprint(StoreBlueprint)
+    api.register_blueprint(TagBlueprint)
     
     return app

@@ -1,5 +1,3 @@
-import uuid
-from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
@@ -22,9 +20,12 @@ class Store(MethodView):
     @blp.response(201, PlainStoreSchema)
     def post(self, body):
         item = StoreModel(**body)
+        
         try:
             db.session.add(item)
             db.session.commit()
+            
+            return item
         except IntegrityError:
             abort(
                 400, 
@@ -36,7 +37,7 @@ class Store(MethodView):
                 message="The server encountered an unexpected condition that prevented it " +
                 "from fulfilling the request."
             )
-        return item
+        
         
 @blp.route("/stores/<string:id>")
 class StoreById(MethodView):
