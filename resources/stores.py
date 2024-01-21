@@ -41,7 +41,7 @@ class Store(MethodView):
         
 @blp.route("/stores/<string:id>")
 class StoreById(MethodView):
-    @blp.response(200, PlainStoreSchema)
+    @blp.response(200, StoreSchema)
     def get(self, id: str):
         return StoreModel.query.get_or_404(id)
     
