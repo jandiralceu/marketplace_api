@@ -5,19 +5,19 @@ from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from models import StoreModel
 from db import db
 
-from schema import PlainStoreSchema
+from schema import PlainStoreSchema, StoreSchema
 
 blp = Blueprint("stores", __name__, description="Operations on Stores table in database")
 
 
 @blp.route("/stores")
 class Store(MethodView):
-    @blp.response(200, PlainStoreSchema(many=True))
+    @blp.response(200, StoreSchema(many=True))
     def get(self):
         return StoreModel.query.all()
     
-    @blp.arguments(PlainStoreSchema)
-    @blp.response(201, PlainStoreSchema)
+    @blp.arguments(StoreSchema)
+    @blp.response(201, StoreSchema)
     def post(self, body):
         item = StoreModel(**body)
         
@@ -48,7 +48,7 @@ class StoreById(MethodView):
     
     @blp.arguments(PlainStoreSchema)
     @blp.response(200)
-    def put(self, bod, id: str):
+    def put(self, body, id: str):
         store = StoreModel.query.get_or_404(id)
         raise NotImplementedError("Delete store is not implemented yet")
 
