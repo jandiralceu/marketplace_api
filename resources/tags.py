@@ -50,8 +50,6 @@ class linkTagsToItem(MethodView):
             
             db.session.add(item)
             db.session.commit()
-            
-            return
         except SQLAlchemyError as err:
             abort(
                 500, 
@@ -68,7 +66,6 @@ class linkTagsToItem(MethodView):
             
             db.session.add(item)
             db.session.commit()
-            return
         except SQLAlchemyError as err:
             abort(
                 500, 

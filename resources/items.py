@@ -8,7 +8,6 @@ from schema import ItemUpdateSchema, ItemSchema
 
 blp = Blueprint("items", __name__, description="Operations on Items table in database")
 
-
 @blp.route("/items")
 class Item(MethodView):
     @blp.response(200, ItemSchema(many=True))
