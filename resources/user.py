@@ -2,11 +2,12 @@ from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from passlib.hash import pbkdf2_sha256
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, get_jwt, jwt_required
 
 from db import db
 from models import UserModel
 from schema import UserSchema
+from blocklist import BLOCKLIST
 
 
 blp = Blueprint("users", __name__, description="Operations on user")
@@ -49,6 +50,16 @@ class UserLogin(MethodView):
             return {"token": create_access_token(identity=user.id)}
         
         abort(401, message="Invalid Credentials. Verify your username or password")
+
+
+@blp.route("/logout")
+class UserLogout(MethodView):
+    @jwt_required()
+    @blp.response(204)
+    def post(self):
+        jti = get_jwt()["jti"]
+        # Use redis to persist revoked tokens
+        BLOCKLIST.add(jti)
 
 
 @blp.route("/users/<int:id>")

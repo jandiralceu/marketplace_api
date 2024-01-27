@@ -11,6 +11,8 @@ from resources.stores import blp as StoreBlueprint
 from resources.tags import blp as TagBlueprint
 from resources.user import blp as UserBluePrint
 
+from blocklist import BLOCKLIST
+
 base_dir = os.path.abspath(os.path.dirname(__file__))
 
 def create_app(db_url: str = None):
@@ -31,6 +33,27 @@ def create_app(db_url: str = None):
 
     api = Api(app=app)
     jwt = JWTManager(app=app)
+    
+    
+    @jwt.token_in_blocklist_loader
+    def check_if_token_in_blocklist(jwt_header, jwt_payload): 
+        return jwt_payload["jti"] in BLOCKLIST
+    
+    
+    @jwt.revoked_token_loader
+    def revoked_token_callback(jwt_header, jwt_payload):
+        return (
+            jsonify({
+                "message": "The token has been revoked.",
+                "error": "token_revoked"
+            }), 
+            401
+        )
+    
+    
+    @jwt.additional_claims_loader
+    def add_claims_to_jwt(identity):
+        pass
     
     
     @jwt.expired_token_loader
