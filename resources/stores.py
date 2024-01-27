@@ -1,6 +1,7 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from flask_jwt_extended import jwt_required
 
 from models import StoreModel
 from db import db
@@ -16,6 +17,7 @@ class Store(MethodView):
     def get(self):
         return StoreModel.query.all()
     
+    @jwt_required()
     @blp.arguments(StoreSchema)
     @blp.response(201, StoreSchema)
     def post(self, body):
@@ -45,7 +47,7 @@ class StoreById(MethodView):
     def get(self, id: str):
         return StoreModel.query.get_or_404(id)
     
-    
+    @jwt_required()
     @blp.arguments(PlainStoreSchema)
     @blp.response(200)
     def put(self, body, id: str):
@@ -53,7 +55,7 @@ class StoreById(MethodView):
         raise NotImplementedError("Delete store is not implemented yet")
 
         
-        
+    @jwt_required()
     @blp.response(204)
     def delete(self, id: str):
         store = StoreModel.query.get_or_404(id)
