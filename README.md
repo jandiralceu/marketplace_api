@@ -27,3 +27,21 @@ python -m pip freeze > requirements.txt
 ```shell
 python -m pip install -r requirements.txt
 ```
+
+## Start migrations
+
+```shell
+flask db init
+```
+
+## Run migrations
+
+```shell
+flask db migrate
+```
+
+## Apply migrations
+
+```shell
+flask db upgrade
+```
