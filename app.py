@@ -10,7 +10,6 @@ from resources.items import blp as ItemBlueprint
 from resources.stores import blp as StoreBlueprint
 from resources.tags import blp as TagBlueprint
 from resources.user import blp as UserBluePrint
-
 from blocklist import BLOCKLIST
 
 base_dir = os.path.abspath(os.path.dirname(__file__))
@@ -45,6 +44,17 @@ def create_app(db_url: str = None):
         return (
             jsonify({
                 "message": "The token has been revoked.",
+                "error": "token_revoked"
+            }), 
+            401
+        )
+        
+        
+    @jwt.needs_fresh_token_loader
+    def token_not_fresh_callback(jwt_header, jwt_payload):
+        return (
+            jsonify({
+                "message": "The token is not fresh.",
                 "error": "token_revoked"
             }), 
             401
