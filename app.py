@@ -10,6 +10,7 @@ from resources.items import blp as ItemBlueprint
 from resources.stores import blp as StoreBlueprint
 from resources.tags import blp as TagBlueprint
 from resources.user import blp as UserBluePrint
+from resources.auth import blp as AuthBluePrint
 from blocklist import BLOCKLIST
 
 base_dir = os.path.abspath(os.path.dirname(__file__))
@@ -105,5 +106,6 @@ def create_app(db_url: str = None):
     api.register_blueprint(StoreBlueprint)
     api.register_blueprint(TagBlueprint)
     api.register_blueprint(UserBluePrint)
+    api.register_blueprint(AuthBluePrint)
     
     return app
